@@ -34,9 +34,6 @@ class Maze():
             self.contents = contents.splitlines()
             self.height = len(self.contents)
             self.width = max(len(line) for line in self.contents)
-            print (self.contents)
-            print("height", self.height)
-            print ("width", self.width)
 
     def print(self):
         for i, row in enumerate(self.contents):
@@ -48,20 +45,19 @@ class Maze():
                     self.start = Node((i, j), None)
                 elif value == "B":
                     print("🟩", end='')
+                    self.goal = (i,j)
                 elif value == " ":
                     print("⬛", end='')
-                    self.goal = (i,j)
             print("\n")
 
     def neighbors(self, node):
         neighbors = []
         row, col = node.state
-
         directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
         for x, y in directions:
             r, c = row + x, col + y
-            if 0 <= r <= self.height and 0 <= c <= self.width:
-                if self.contents[r][c] == " ":
+            if 0 <= r <= self.height - 1 and 0 <= c <= self.width - 1:
+                if self.contents[r][c] == " " or self.contents[r][c] == "B":
                     neighbors.append((r, c))
         return neighbors
 
@@ -73,31 +69,28 @@ class Maze():
         self.solution = list(reversed(path))
         
     def print_solution(self):
-        for node in self.solution:
-            for i, row in enumerate(self.contents):
-                for j, value in enumerate(row):
-                    if value == "#":
-                        print ("⬜", end='')
-                    elif value == "A":
-                        print("🟥", end='')
-                        self.start = Node((i, j), None)
-                    elif value == "B":
-                        print("🟩", end='')
-                    elif value == " ":
-                        is_sol = False
-                        for node in self.solution: 
-                            if (i, j) == node.state:
-                                print("🟦", end='')
-                                is_sol = True
-                                break
-                        if not is_sol:
+        for i, row in enumerate(self.contents):
+            for j, value in enumerate(row):
+                if value == "#":
+                    print ("⬜", end='')
+                elif value == "A":
+                    print("🟥", end='')
+                elif value == "B":
+                    print("🟩", end='')
+                elif value == " ":
+                    is_sol = False
+                    for node in self.solution: 
+                        if (i, j) == node.state:
+                            print("🟦", end='')
+                            is_sol = True
+                            break
+                    if not is_sol:
                             print("⬛", end='')
-                    
-                print("\n")
+            print("\n")
 
 
 if __name__ == "__main__":
-    maze = Maze("maze1.txt")
+    maze = Maze("maze2.txt")
     frontier = QueueFrontier()
     maze.print()
 
@@ -106,7 +99,6 @@ if __name__ == "__main__":
     # Add initial start 
     start = maze.start
     frontier.add(start)
-    maze_explored.append(start.state)
 
     while True:
         # If frontier is empty -> no solution
@@ -127,11 +119,9 @@ if __name__ == "__main__":
 
         # Take the next step
         neighbors = maze.neighbors(node)
-
         for neighbor in neighbors:
             if not frontier.contains_state(neighbor) and neighbor not in maze_explored:
                 to_add = Node(neighbor, parent=node)
-                print("\n added", to_add.state)
                 frontier.add(to_add)
 
             
