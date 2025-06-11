@@ -4,7 +4,7 @@ from dfs import *
 if __name__ == "__main__":
 
     maze = Maze("maze2.txt")
-    frontier = StackFrontier()
+    frontier = QueueFrontier()
 
     print("Maze:")
     maze.print()
@@ -30,6 +30,7 @@ if __name__ == "__main__":
         # If node contains a goal state -> return the solution
         if node.state == maze.goal:
             maze.maze_solution(node)
+            #maze.explore_path(maze_explored)
             maze.print_solution()
             break
 

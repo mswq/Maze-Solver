@@ -68,6 +68,28 @@ class Maze():
             path.append(node)
             node = node.parent
         self.solution = list(reversed(path))
+
+    def explore_path(self, explore):
+        for length in range(len(explore)):
+            for i, row in enumerate(self.contents):
+                for j, value in enumerate(row):
+                    if value == "#":
+                        print ("⬜", end='')
+                    elif value == "A":
+                        print("🟥", end='')
+                    elif value == "B":
+                        print("🟩", end='')
+                    elif value == " ":
+                        is_sol = False
+                        for node in explore[:length]: 
+                            if (i, j) == node:
+                                print ("🟨", end='')
+                                is_sol = True
+                                break
+                        if not is_sol:
+                            print("⬛", end='')
+                print()
+
         
     def print_solution(self):
         print ("Solution")
@@ -83,11 +105,12 @@ class Maze():
                     is_sol = False
                     for node in self.solution: 
                         if (i, j) == node.state:
-                            print("🟦", end='')
+                            print ("🟦", end='')
                             is_sol = True
                             break
                     if not is_sol:
-                            print("⬛", end='')
-            print("\n")
+                        print("⬛", end='')
+            print()
+
 
 
