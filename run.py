@@ -4,10 +4,10 @@ from main_generator import *
 
 if __name__ == "__main__":
 
-    # maze = Maze("maze2.txt")
-    frontier = QueueFrontier()
+    #maze = Maze("m.txt")
+    frontier = StackFrontier()
 
-    gen_maze = MazeGenerator(11, 5)
+    gen_maze = MazeGenerator(21, 11)
     gen_maze.run()
 
     print("Maze:")
@@ -37,8 +37,10 @@ if __name__ == "__main__":
         # If node contains a goal state -> return the solution
         if node.state == maze.goal:
             maze.maze_solution(node)
-            #maze.explore_path(maze_explored)
+            node_amt = maze.explore_path(maze_explored)
             maze.print_solution()
+            print (f"\nNodes Visited: {node_amt}")
+            maze.save_exploration_gif(maze_explored, "dfs.gif")
             break
 
         # Take the next step
