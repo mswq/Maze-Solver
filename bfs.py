@@ -27,6 +27,7 @@ class QueueFrontier():
             raise Exception("frontier is empty")   
         return self.frontier.pop(0)
 
+
 class Maze():
     def __init__(self, filename):
         self.solution = []

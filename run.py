@@ -1,12 +1,19 @@
 from bfs import *
 from dfs import *
+from main_generator import *
 
 if __name__ == "__main__":
 
-    maze = Maze("maze2.txt")
+    # maze = Maze("maze2.txt")
     frontier = QueueFrontier()
 
+    gen_maze = MazeGenerator(11, 5)
+    gen_maze.run()
+
     print("Maze:")
+
+    maze = gen_maze.to_solve()
+    maze = Maze(maze)
     maze.print()
 
     maze_explored = []
